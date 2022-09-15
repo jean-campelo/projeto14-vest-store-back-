@@ -4,11 +4,11 @@ import * as accountController from "../controllers/account.controller.js";
 const router = express.Router();
 
 router.post(
-  `${process.env.REACT_APP_API_BASE_URL}/sign-up`,
+  `${process.env.MONGO_URI}/sign-up`,
   accountController.registerNewUser
 );
 router.get(
-  `${process.env.REACT_APP_API_BASE_URL}/sign-in`,
+  `${process.env.MONGO_URI}/sign-in`,
   accountController.getUsers
 );
 

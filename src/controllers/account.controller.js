@@ -3,7 +3,7 @@ import db from "../database/db.js";
 async function registerNewUser(req, res) {
   const { name, color } = req.body;
 
-  await db.collection("products").insertOne({
+  await db.collection("vest-store").insertOne({
     name,
     color,
   });
@@ -15,11 +15,11 @@ async function registerNewUser(req, res) {
 async function getUsers (req, res) {
 
   try {
-    const viewInsertion = await db
-      .collection("products")
-      .find({ color: "blue" })
+    const viewCollection = await db
+      .collection("dataUsers")
+      .find()
       .toArray();
-    res.send(viewInsertion);
+    res.send(viewCollection);
   } catch (error) {
     console.log(error.message);
     res.send(error.message);

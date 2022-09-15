@@ -7,8 +7,9 @@ try {
   console.log("Mongodb connected");
 } catch (err) {
   console.log(err.message);
+
 }
 
-const db = mongoClient.db("vest-store");
+const db = mongoClient.db("cluster0");
 
 export default db;
