@@ -9,7 +9,7 @@ const newUserSchema = joi.object({
 });
 
 async function registerNewUser(req, res) {
-  const { name, email, password, imageProfile } = req.body;
+  const { name, email, password } = req.body;
 
   const validationNewUser = newUserSchema.validate(req.body, {
     abortEarly: false,
