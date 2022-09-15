@@ -1,10 +1,14 @@
+import "./setup.js"
 import express from "express";
 import cors from "cors";
+import router from "./routes/routes.js";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const server = express();
+server.use(router);
 
-app.listen(process.env.PORT, () => {
+server.use(cors());
+server.use(express.json());
+
+server.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });
