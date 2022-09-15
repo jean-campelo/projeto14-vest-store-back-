@@ -1,9 +1,10 @@
 import db from "../database/db.js";
+import joi from "joi";
 
-const validationNewUser = joi.object({
-  name: joi.required().string().empty(" "),
-  email: joi.required().email(),
-  password: joi.required().strinf(),
+const newUserSchema = joi.object({
+  name: joi.string().required().empty(" "),
+  email: joi.required().email().string(),
+  password: joi.required().string(),
 });
 
 async function registerNewUser(req, res) {
@@ -18,6 +19,18 @@ async function registerNewUser(req, res) {
       (detail) => detail.message
     );
     return res.status(422).send({ message: errors });
+  }
+
+  try {
+    const userAlreadyRegistered = await db
+      .collection("dataUsers")
+      .findOne({ email });
+
+    if (userAlreadyRegistered) {
+      res.status(422).send({ message: "User already registered" });
+    }
+  } catch (error) {
+    return res.sendStatus(500);
   }
 }
 
