@@ -1,5 +1,6 @@
 import db from "../database/db.js";
 import joi from "joi";
+import bcrypt from "bcrypt";
 
 const newUserSchema = joi.object({
   name: joi.string().required().empty(" "),
@@ -8,7 +9,7 @@ const newUserSchema = joi.object({
 });
 
 async function registerNewUser(req, res) {
-  const { name, email, passord, imageProfile } = req.body;
+  const { name, email, password, imageProfile } = req.body;
 
   const validationNewUser = newUserSchema.validate(req.body, {
     abortEarly: false,
@@ -32,6 +33,19 @@ async function registerNewUser(req, res) {
   } catch (error) {
     return res.sendStatus(500);
   }
+
+  //register new user
+  try {
+    db.collection("dataUsers").insertOne({
+      name,
+      email,
+      passwordHash: bcrypt.hashSync(password, 10),
+    });
+  } catch (error) {
+    return res.status(500).send({ message: "Register failed" });
+  }
+
+  res.sendStatus(201);
 }
 
 export { registerNewUser };
