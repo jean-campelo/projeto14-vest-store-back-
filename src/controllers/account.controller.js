@@ -66,7 +66,7 @@ async function accessAccount(req, res) {
   try {
     const userRegistered = await db.collection("dataUsers").findOne({ email });
 
-    if (userRegistered) {
+    if (!userRegistered) {
       return res.send(401).send({ message: "Email or password incorrects" });
     }
   } catch (error) {
