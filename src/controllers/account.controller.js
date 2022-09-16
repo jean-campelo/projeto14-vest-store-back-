@@ -48,4 +48,8 @@ async function registerNewUser(req, res) {
   res.sendStatus(201);
 }
 
-export { registerNewUser };
+function accessAccount (req, res) {
+
+}
+
+export { registerNewUser, accessAccount };
