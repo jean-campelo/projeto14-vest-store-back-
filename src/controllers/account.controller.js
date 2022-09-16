@@ -53,7 +53,7 @@ async function registerNewUser(req, res) {
   res.sendStatus(201);
 }
 
-function accessAccount(req, res) {
+async function accessAccount(req, res) {
   const { email, password } = req.body;
 
   const userValidation = userSchema.validate(req.body, { abortEarly: false });
@@ -61,6 +61,16 @@ function accessAccount(req, res) {
   if (userValidation.error) {
     const errors = userValidation.error.details.map((detail) => detail.message);
     return res.status(422).send({ message: errors });
+  }
+
+  try {
+    const userRegistered = await db.collection("dataUsers").findOne({ email });
+
+    if (userRegistered) {
+      return res.send(401).send({ message: "Email or password incorrects" });
+    }
+  } catch (error) {
+    return res.sendStatus(500);
   }
 }
 
