@@ -69,6 +69,16 @@ async function accessAccount(req, res) {
     if (!userRegistered) {
       return res.send(401).send({ message: "Email or password incorrects" });
     }
+
+    const passwordIsValid = bcrypt.compareSync(
+      password,
+      userRegistered.passwordHash
+    );
+
+    if (!passwordIsValid) {
+      return res.send(401).send({ message: "Email or password incorrects" });
+    }
+
   } catch (error) {
     return res.sendStatus(500);
   }
