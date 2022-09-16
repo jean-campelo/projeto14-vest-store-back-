@@ -86,10 +86,11 @@ async function accessAccount(req, res) {
       .collection("sessions")
       .insertOne({ userId: userRegistered._id, token });
     res.send({ name: userRegistered.name, token });
-    
+
   } catch (error) {
     return res.sendStatus(500);
   }
+  res.sendStatus(200);
 }
 
 export { registerNewUser, accessAccount };
