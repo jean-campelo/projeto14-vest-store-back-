@@ -1,6 +1,7 @@
 import db from "../database/db.js";
 import joi from "joi";
 import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 
 const newUserSchema = joi.object({
   name: joi.string().required().empty(" "),
@@ -79,6 +80,13 @@ async function accessAccount(req, res) {
       return res.send(401).send({ message: "Email or password incorrects" });
     }
 
+    //new token for session
+    const token = uuid();
+    await db
+      .collection("sessions")
+      .insertOne({ userId: userRegistered._id, token });
+    res.send({ name: userRegistered.name, token });
+    
   } catch (error) {
     return res.sendStatus(500);
   }
