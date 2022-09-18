@@ -6,6 +6,7 @@ import {validateCartInfo} from "../middlewares/validateCartInfo.js";
 const router = express.Router();
 
 router.post("/sign-up", accountController.registerNewUser);
+router.post("/sign-in", accountController.accessAccount);
 
 router.get("/cart/my-cart", cartController.getCartItems);
 
