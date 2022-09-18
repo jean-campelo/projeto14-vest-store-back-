@@ -83,11 +83,9 @@ export async function returnCategory(req, res) {
     const category = req.params.category;
     if (category === 'not-found') {
         res.send({ selectionTitle: 'categoria não encontrada' });
-        console.log('não é categoria');
         return;
     }
 
-    console.log(category);
     try {
         const products = await db
             .collection('products').find({
@@ -102,8 +100,6 @@ export async function returnCategory(req, res) {
             delete product.type;
             return product;
         })
-        console.log(productsSend);
-
 
         res.send({ products: productsSend });
     } catch (error) {
