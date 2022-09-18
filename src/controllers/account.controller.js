@@ -5,8 +5,9 @@ import { v4 as uuid } from "uuid";
 
 const newUserSchema = joi.object({
   name: joi.string().required().empty(" "),
-  email: joi.required().email().string(),
-  password: joi.required().string(),
+  email: joi.string().required().email(),
+  password: joi.string().required(),
+  imageProfile: joi.string().required(),
 });
 
 const userSchema = joi.object({
@@ -15,7 +16,7 @@ const userSchema = joi.object({
 });
 
 async function registerNewUser(req, res) {
-  const { name, email, password } = req.body;
+  const { name, email, password, imageProfile } = req.body;
 
   const validationNewUser = newUserSchema.validate(req.body, {
     abortEarly: false,
@@ -46,6 +47,7 @@ async function registerNewUser(req, res) {
       name,
       email,
       passwordHash: bcrypt.hashSync(password, 10),
+      imageProfile,
     });
   } catch (error) {
     return res.status(500).send({ message: "Register failed" });
