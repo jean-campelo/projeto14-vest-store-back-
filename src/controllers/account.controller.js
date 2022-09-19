@@ -1,7 +1,7 @@
 import db from "../database/db.js";
 import joi from "joi";
 import bcrypt from "bcrypt";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 const newUserSchema = joi.object({
   name: joi.string().required().empty(" "),
@@ -83,7 +83,7 @@ async function accessAccount(req, res) {
     }
 
     //new token for session
-    const token = uuid();
+    const token = uuidv4();
     await db
       .collection("sessions")
       .insertOne({ userId: userRegistered._id, token });
