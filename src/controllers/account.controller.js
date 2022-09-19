@@ -36,6 +36,7 @@ async function registerNewUser(req, res) {
 
     if (userAlreadyRegistered) {
       res.status(422).send({ message: "User already registered" });
+      return;
     }
   } catch (error) {
     return res.sendStatus(500);
@@ -54,6 +55,7 @@ async function registerNewUser(req, res) {
   }
 
   res.sendStatus(201);
+  return;
 }
 
 async function accessAccount(req, res) {
@@ -70,7 +72,7 @@ async function accessAccount(req, res) {
     const userRegistered = await db.collection("dataUsers").findOne({ email });
 
     if (!userRegistered) {
-      return res.send(401).send({ message: "Email or password incorrects" });
+      return res.status(401).send({ message: "Email or password incorrects" });
     }
 
     const passwordIsValid = bcrypt.compareSync(
@@ -79,19 +81,29 @@ async function accessAccount(req, res) {
     );
 
     if (!passwordIsValid) {
-      return res.send(401).send({ message: "Email or password incorrects" });
+      return res.status(401).send({ message: "Email or password incorrects" });
     }
 
     //new token for session
     const token = uuidv4();
-    await db
-      .collection("sessions")
-      .insertOne({ userId: userRegistered._id, token });
+    const session = await db.collection('sessions').findOne({ userId: userRegistered._id })
+    if (session) {
+      await db
+        .collection('sessions')
+        .updateOne(
+          { userId: userRegistered._id }, { $set: { token: token } }
+        );
+    } else {
+      await db
+        .collection("sessions")
+        .insertOne({ userId: userRegistered._id, token });
+    }
+
     res.send({ name: userRegistered.name, token });
+    return;
   } catch (error) {
     return res.sendStatus(500);
   }
-  res.sendStatus(200);
 }
 
 export { registerNewUser, accessAccount };
