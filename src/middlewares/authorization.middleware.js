@@ -2,7 +2,7 @@ import db from '../database/db.js';
 
 export async function authenticateToken(req, res, next) {
     const { authorization } = req.headers;
-    const token = authorization?.replace('Bearer ', '');
+    const token = authorization?.replace('Bearer ', '').trim();
 
     if (!token) return res.sendStatus(401);
 

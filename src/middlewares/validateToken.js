@@ -10,7 +10,7 @@ export async function validateToken(req, res, next) {
     const session = await db.collection("sessions").findOne({ token });
     if (!session) return res.sendStatus(401);
 
-    const user = await db.collection("users").findOne({
+    const user = await db.collection("dataUsers").findOne({
       _id: session.userId,
     });
     if (!user) return res.sendStatus(401);
