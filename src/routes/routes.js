@@ -2,11 +2,11 @@ import express from "express";
 import * as accountController from "../controllers/account.controller.js";
 
 import * as cartController from "../controllers/cart.controller.js";
-import {validateCartInfo} from "../middlewares/validateCartInfo.js";
+import { validateCartInfo } from "../middlewares/validateCartInfo.js";
 
 import * as homeController from "../controllers/home.controllers.js";
 
-import { authenticateToken } from "../middleware/authorization.middleware.js"
+import { authenticateToken } from "../middlewares/authorization.middleware.js"
 
 
 const router = express.Router();
