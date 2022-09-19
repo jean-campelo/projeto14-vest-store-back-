@@ -12,10 +12,13 @@ router.post("/sign-in", accountController.accessAccount);
 
 // add produto (provisória)
 router.post("/add-product", homeController.addProduct);
+router.post("/add-selection", homeController.addSelection);
+router.post("/prod-selection", homeController.addProductToSelection);
 
 // Home
 router.get("/home", authenticateToken, homeController.returnProducts);
 router.get("/home/:category", authenticateToken, homeController.returnCategory);
+router.get("/selection/:id", authenticateToken, homeController.returnSelection);
 
 
 
